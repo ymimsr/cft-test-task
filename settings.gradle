@@ -1,2 +1,4 @@
 rootProject.name = "cft test task"
 include ':app'
+include ':data'
+include ':domain'
