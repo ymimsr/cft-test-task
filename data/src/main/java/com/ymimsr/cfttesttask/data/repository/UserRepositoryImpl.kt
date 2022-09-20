@@ -10,7 +10,7 @@ class UserRepositoryImpl(private val userStorage: UserStorage) : UserRepository 
         userStorage.save(user)
     }
 
-    override fun get(): User {
+    override fun get(): User? {
         return userStorage.get()
     }
 

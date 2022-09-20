@@ -1,4 +1,4 @@
-package com.ymimsr.cfttesttask.presentation
+package com.ymimsr.cfttesttask.presentation.viewmodel.factory
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ymimsr.cfttesttask.data.repository.UserRepositoryImpl
 import com.ymimsr.cfttesttask.data.storage.sharedpref.SharedPrefUserStorage
 import com.ymimsr.cfttesttask.domain.usecase.SignUpUseCase
+import com.ymimsr.cfttesttask.presentation.viewmodel.SignUpViewModel
 
 class SignUpViewModelFactory(context: Context) : ViewModelProvider.Factory {
 

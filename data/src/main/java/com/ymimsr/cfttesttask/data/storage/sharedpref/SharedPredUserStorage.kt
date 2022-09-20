@@ -7,10 +7,12 @@ import java.time.LocalDate
 
 
 private const val SHARED_PREFS_NAME = "user_data"
+private const val KEY_IS_PRESENT = "isPresent"
 private const val KEY_FIRST_NAME = "firstName"
 private const val KEY_LAST_NAME = "lastName"
 private const val KEY_BIRTH_DAY = "birthDay"
 private const val KEY_PASSWORD = "password"
+private const val DEFAULT_IS_PRESENT = false
 private const val DEFAULT_FIRST_NAME = "default first name"
 private const val DEFAULT_LAST_NAME = "default last name"
 private const val DEFAULT_BIRTH_DAY = 0L
@@ -22,13 +24,17 @@ class SharedPrefUserStorage(context: Context) : UserStorage {
         context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
 
     override fun save(user: User) {
+        sharedPreference.edit().putBoolean(KEY_IS_PRESENT, true).apply()
         sharedPreference.edit().putString(KEY_FIRST_NAME, user.firstName).apply()
         sharedPreference.edit().putString(KEY_LAST_NAME, user.lastName).apply()
         sharedPreference.edit().putLong(KEY_BIRTH_DAY, user.birthday.toEpochDay()).apply()
         sharedPreference.edit().putString(KEY_PASSWORD, user.password).apply()
     }
 
-    override fun get(): User {
+    override fun get(): User? {
+        if (!sharedPreference.getBoolean(KEY_IS_PRESENT, DEFAULT_IS_PRESENT))
+            return null
+
         return User(
             firstName = sharedPreference.getString(KEY_FIRST_NAME, DEFAULT_FIRST_NAME) ?: DEFAULT_FIRST_NAME,
             lastName = sharedPreference.getString(KEY_LAST_NAME, DEFAULT_LAST_NAME) ?: DEFAULT_LAST_NAME,

@@ -6,6 +6,6 @@ interface UserRepository {
 
     fun save(user: User)
 
-    fun get(): User
+    fun get(): User?
 
 }

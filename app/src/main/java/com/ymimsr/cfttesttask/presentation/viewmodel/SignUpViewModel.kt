@@ -1,4 +1,4 @@
-package com.ymimsr.cfttesttask.presentation
+package com.ymimsr.cfttesttask.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,9 +13,7 @@ private const val birthdayErrorText = "You have to be at least 18 years old to s
 private const val passwordErrorText = "Password has to be at least 12 characters long and include at least one digit and one capital letter"
 private const val passwordMismatchErrorText = "Passwords don't match"
 
-class SignUpViewModel(
-    private val signUpUseCase: SignUpUseCase,
-    ) : ViewModel() {
+class SignUpViewModel(private val signUpUseCase: SignUpUseCase) : ViewModel() {
 
     val firstNameLengthErrorMessage = MutableLiveData<String?>()
     val lastNameLengthErrorMessage = MutableLiveData<String?>()
@@ -29,7 +27,6 @@ class SignUpViewModel(
     private var birthdayFieldFlag = false
     private var passwordFieldFlag = false
     private var confirmPasswordFieldFlag = false
-
 
     init {
         isValid.value = false

@@ -1,8 +1,8 @@
 package com.ymimsr.cfttesttask.presentation
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.doAfterTextChanged
@@ -10,10 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputLayout
 import com.ymimsr.cfttesttask.R
+import com.ymimsr.cfttesttask.presentation.viewmodel.SignUpViewModel
+import com.ymimsr.cfttesttask.presentation.viewmodel.factory.SignUpViewModelFactory
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var vm: SignUpViewModel
+    private lateinit var viewModel: SignUpViewModel
 
     private lateinit var firstNameField: EditText
     private lateinit var firstNameFieldLayout: TextInputLayout
@@ -31,7 +33,7 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        vm = ViewModelProvider(this, SignUpViewModelFactory(this))
+        viewModel = ViewModelProvider(this, SignUpViewModelFactory(this))
             .get(SignUpViewModel::class.java)
 
         firstNameField = findViewById(R.id.firstName)
@@ -46,49 +48,44 @@ class SignUpActivity : AppCompatActivity() {
         confirmPasswordFieldLayout = findViewById(R.id.confirmPasswordLayout)
         signUpButton = findViewById(R.id.signUp)
 
-        vm.firstNameLengthErrorMessage.observe(this) {
-            //firstNameFieldLayout.isEndIconVisible = !it.isNullOrEmpty()
+        viewModel.firstNameLengthErrorMessage.observe(this) {
             firstNameFieldLayout.error = it
         }
 
-        vm.lastNameLengthErrorMessage.observe(this) {
-            //lastNameFieldLayout.isEndIconVisible = !it.isNullOrEmpty()
+        viewModel.lastNameLengthErrorMessage.observe(this) {
             lastNameFieldLayout.error = it
         }
 
-        vm.birthdayErrorMessage.observe(this) {
-            //birthdayFieldLayout.isEndIconVisible = !it.isNullOrEmpty()
+        viewModel.birthdayErrorMessage.observe(this) {
             birthdayFieldLayout.error = it
         }
 
-        vm.passwordErrorMessage.observe(this) {
-            //passwordFieldLayout.isEndIconVisible = !it.isNullOrEmpty()
+        viewModel.passwordErrorMessage.observe(this) {
             passwordFieldLayout.error = it
         }
 
-        vm.passwordMismatchErrorMessage.observe(this) {
-            //confirmPasswordFieldLayout.isEndIconVisible = !it.isNullOrEmpty()
+        viewModel.passwordMismatchErrorMessage.observe(this) {
             confirmPasswordField.error = it
         }
 
-        vm.isValid.observe(this) {
+        viewModel.isValid.observe(this) {
             signUpButton.isEnabled = it
         }
 
         firstNameField.doAfterTextChanged {
-            vm.onFirstNameFieldChange(firstNameField.text.toString())
+            viewModel.onFirstNameFieldChange(firstNameField.text.toString())
         }
 
         lastNameField.doAfterTextChanged {
-            vm.onLastNameFieldChange(lastNameField.text.toString())
+            viewModel.onLastNameFieldChange(lastNameField.text.toString())
         }
 
         passwordField.doAfterTextChanged {
-            vm.onPasswordFieldChange(passwordField.text.toString())
+            viewModel.onPasswordFieldChange(passwordField.text.toString())
         }
 
         confirmPasswordField.doAfterTextChanged {
-            vm.onConfirmPasswordFieldChange(
+            viewModel.onConfirmPasswordFieldChange(
                 passwordField.text.toString(),
                 confirmPasswordField.text.toString()
             )
@@ -104,16 +101,19 @@ class SignUpActivity : AppCompatActivity() {
 
         materialDatePicker.addOnPositiveButtonClickListener {
             birthdayField.setText(materialDatePicker.headerText)
-            vm.onBirthdayFieldChange(birthdayField.text.toString())
+            viewModel.onBirthdayFieldChange(birthdayField.text.toString())
         }
 
         signUpButton.setOnClickListener {
-            vm.onSignUpButtonClick(
+            viewModel.onSignUpButtonClick(
                 firstName = firstNameField.text.toString(),
                 lastName = lastNameField.text.toString(),
                 birthday = birthdayField.text.toString(),
                 password = passwordField.text.toString()
             )
+
+            val switchToGreetingsIntent = Intent(this, GreetingsActivity::class.java)
+            startActivity(switchToGreetingsIntent)
         }
 
     }
